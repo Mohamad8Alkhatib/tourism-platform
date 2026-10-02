@@ -13,11 +13,24 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+
+            $table->foreignId('account_type_id')
+                ->constrained('account_types')
+                ->restrictOnDelete();
+
+            $table->string('name',150);
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('phone', 30)->nullable();
             $table->string('password');
+            $table->string('avatar', 500)->nullable();
+
+            $table->enum('status', ['active', 'suspended'])
+                ->default('active');
+
+            $table->timestamp('email_verified_at')->nullable();
+
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
 
