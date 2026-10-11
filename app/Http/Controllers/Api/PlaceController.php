@@ -14,12 +14,7 @@ use Illuminate\Http\Response;
 
 class PlaceController extends Controller
 {
-    private PlaceService $placeService;
-
-    public function __construct(PlaceService $placeService)
-    {
-        $this->placeService = $placeService;
-    }
+    public function __construct(protected PlaceService $placeService) {}
 
     public function index(): AnonymousResourceCollection
     {

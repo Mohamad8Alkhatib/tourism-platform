@@ -12,11 +12,8 @@ use Illuminate\Http\Response;
 
 class PlaceImageController extends Controller
 {
-    private PlaceImageService $imageService;
-    public function __construct(PlaceImageService $imageService)
-    {
-        $this->imageService = $imageService;
-    }
+    public function __construct(protected PlaceImageService $imageService) {}
+
     public function store(StorePlaceImagesRequest $request, Place $place): JsonResponse
     {
         \Gate::authorize('update', $place);
@@ -25,7 +22,8 @@ class PlaceImageController extends Controller
 
         return ImageResource::collection($images)->response()->setStatusCode(201);
     }
-    public function destroy(Place $place, int $image):Response
+
+    public function destroy(Place $place, int $image): Response
     {
         \Gate::authorize('update', $place);
 

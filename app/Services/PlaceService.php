@@ -9,7 +9,7 @@ class PlaceService
 {
     public function list(): LengthAwarePaginator
     {
-        return Place::with(['city', 'categories', 'images'])
+        return Place::with(['city', 'categories', 'images', 'creator'])
             ->where('status', 'published')
             ->latest()
             ->paginate(15);
@@ -17,7 +17,7 @@ class PlaceService
 
     public function find(Place $place): Place
     {
-        return $place->load(['city', 'categories', 'images']);
+        return $place->load(['city', 'categories', 'images', 'creator']);
     }
 
     public function create(array $data): Place
@@ -35,7 +35,7 @@ class PlaceService
                 $place->categories()->sync($categoryIds);
             } // هون أضفنا مصفوفة ال categories اللي فصلناها عن المصفوفة الاساسية لجدول place_categories عن طريق علاقة categories اللي عند place
 
-            return $place->load(['city', 'categories', 'images']);
+            return $place->load(['city', 'categories', 'images', 'creator']);
         });
     }
 
@@ -50,7 +50,7 @@ class PlaceService
                 $place->categories()->sync($categoryIds);
             }
 
-            return $place->load(['city', 'categories', 'images']);
+            return $place->load(['city', 'categories', 'images', 'creator']);
         });
     }
 

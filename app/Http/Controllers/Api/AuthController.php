@@ -14,12 +14,8 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    private AuthService $authService;
+    public function __construct(protected AuthService $authService) {}
 
-    public function __construct(AuthService $authService)
-    {
-        $this->authService = $authService;
-    }
     /**
      * @bodyParam password string required The user password. Example: secret123
      * @bodyParam password_confirmation string required Must match password. Example: secret123
@@ -30,9 +26,10 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'The activation code has been sent to your email',
-            'user' => new UserResource($user)
+            'user' => new UserResource($user),
         ]);
     }
+
     public function login(LoginRequest $request)
     {
         try {
@@ -43,9 +40,10 @@ class AuthController extends Controller
 
         return response()->json([
             'user' => new UserResource($result['user']),
-            'token' => $result['token']
+            'token' => $result['token'],
         ]);
     }
+
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
@@ -68,6 +66,7 @@ class AuthController extends Controller
             'token' => $result['token'],
         ]);
     }
+
     public function resendOtp(ResendOtpRequest $request)
     {
         $user = User::where('email', $request->email)->firstOrFail();

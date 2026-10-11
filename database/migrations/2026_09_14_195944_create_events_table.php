@@ -16,16 +16,25 @@ return new class extends Migration
             $table->foreignId('city_id')
                 ->constrained()
                 ->cascadeOnDelete();
-            $table->string('name_en');
-            $table->string('name_ar')->nullable();
-            $table->text('description_en')->nullable();
+            $table->foreignId('category_id')
+                ->nullable()
+                ->constrained()
+                ->nullOnDelete();
+            $table->string('name_en', 200);
+            $table->string('name_ar', 200)->nullable();
+            $table->text('description_en');
             $table->text('description_ar')->nullable();
+            $table->string('location', 500)->nullable();
             $table->date('start_date');
             $table->date('end_date')->nullable();
+            $table->string('organizer', 200)->nullable();
+            $table->text('ticket_information')->nullable();
             $table->enum('status', [
-                'draft', 'submitted', 'under_review', 'published', 'rejected', 'changes_requested'
+                'draft', 'submitted', 'under_review', 'published', 'rejected', 'changes_requested',
             ])->default('draft');
+            $table->foreignId('created_by')->constrained('users');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->index('city_id');
         });

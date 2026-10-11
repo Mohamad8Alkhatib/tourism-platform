@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\EventController;
+use App\Http\Controllers\Api\EventImageController;
 use App\Http\Controllers\Api\PlaceController;
 use App\Http\Controllers\Api\PlaceImageController;
 use Illuminate\Http\Request;
@@ -19,6 +21,9 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
+
+Route::get('/categories', [CategoryController::class, 'index']);
+
 Route::prefix('/places')->group(function () {
     Route::get('', [PlaceController::class, 'index']);
     Route::get('/{place}', [PlaceController::class, 'show']);
@@ -32,4 +37,16 @@ Route::prefix('/places')->group(function () {
     });
 });
 
-Route::get('/categories', [CategoryController::class, 'index']);
+Route::prefix('events')->group(function () {
+    Route::get('', [EventController::class, 'index']);
+    Route::get('/{event}', [EventController::class, 'show']);
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('', [EventController::class, 'store']);
+        Route::put('/{event}', [EventController::class, 'update']);
+        Route::delete('/{event}', [EventController::class, 'destroy']);
+
+        Route::post('/{event}/images', [EventImageController::class, 'store']);
+        Route::delete('/{event}/images/{image}', [EventImageController::class, 'destroy']);
+    });
+});

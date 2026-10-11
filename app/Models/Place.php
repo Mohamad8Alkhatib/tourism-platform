@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Place extends Model
 {
     use SoftDeletes;
+
     protected $fillable = [
         'city_id',
         'name_en',
@@ -21,14 +22,14 @@ class Place extends Model
         'latitude',
         'longitude',
         'opining_hours',
-        'status'
+        'status',
     ];
 
     protected function casts(): array
     {
         return [
             'opining_hours' => 'array',
-            'is_featured' => 'boolean'
+            'is_featured' => 'boolean',
         ];
     }
 
@@ -39,7 +40,7 @@ class Place extends Model
 
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(Category::class, 'place_categories');
+        return $this->belongsToMany(Category::class, 'place_categories')->withTimestamps();
     }
 
     public function owners(): BelongsToMany
