@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\AdminGuideApplicationController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\EventImageController;
+use App\Http\Controllers\Api\GuideApplicationController;
 use App\Http\Controllers\Api\PlaceController;
 use App\Http\Controllers\Api\PlaceImageController;
 use Illuminate\Http\Request;
@@ -13,6 +15,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+// Auth
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
 Route::post('/resend-otp', [AuthController::class, 'resendOtp']);
@@ -24,6 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::get('/categories', [CategoryController::class, 'index']);
 
+// Places
 Route::prefix('/places')->group(function () {
     Route::get('', [PlaceController::class, 'index']);
     Route::get('/{place}', [PlaceController::class, 'show']);
@@ -37,6 +41,7 @@ Route::prefix('/places')->group(function () {
     });
 });
 
+// Events
 Route::prefix('events')->group(function () {
     Route::get('', [EventController::class, 'index']);
     Route::get('/{event}', [EventController::class, 'show']);
@@ -48,5 +53,25 @@ Route::prefix('events')->group(function () {
 
         Route::post('/{event}/images', [EventImageController::class, 'store']);
         Route::delete('/{event}/images/{image}', [EventImageController::class, 'destroy']);
+    });
+});
+
+// Guides
+Route::middleware('auth:sanctum')->group(function () {
+    // User
+    Route::get('guide-applications', [GuideApplicationController::class, 'index']);
+    Route::post('guide-applications', [GuideApplicationController::class, 'store']);
+    Route::get('guide-applications/{guideApplication}', [GuideApplicationController::class, 'show']);
+    Route::post('guide-applications/{guideApplication}', [GuideApplicationController::class, 'update']);
+
+    // Admin
+    Route::prefix('admin')->group(function () {
+        Route::middleware('can:view_guide_applications')->group(function () {
+            Route::get('guide-applications', [AdminGuideApplicationController::class, 'index']);
+            Route::get('guide-applications/{guideApplication}', [AdminGuideApplicationController::class, 'show']);
+        });
+
+        Route::patch('guide-applications/{guideApplication}/review', [AdminGuideApplicationController::class, 'review'])
+            ->middleware('can:review_guide_applications');
     });
 });

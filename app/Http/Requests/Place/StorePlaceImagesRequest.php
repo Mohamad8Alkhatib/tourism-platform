@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Place;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterRequest extends FormRequest
+class StorePlaceImagesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +23,8 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:150',
-            'email' => 'required|email:rfc,dns|unique:users,email',
-            'phone' => 'nullable|string|max:30',
-            'password'=> 'required|string|min:8|confirmed'
+            'images' => 'required|array|min:1|max:10',
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120' //5MB
         ];
     }
 }

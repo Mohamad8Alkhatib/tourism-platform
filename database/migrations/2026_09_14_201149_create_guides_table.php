@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,11 +17,15 @@ return new class extends Migration
                 ->unique()
                 ->constrained()
                 ->cascadeOnDelete();
+            $table->foreignId('city_id')->constrained();
             $table->text('bio_en')->nullable();
             $table->text('bio_ar')->nullable();
+            $table->unsignedInteger('years_experience');
+            $table->json('languages');
             $table->enum('verification_status', [
                 'pending', 'approved', 'rejected', 'suspended',
             ])->default('pending');
+            $table->timestamp('verified_at')->nullable();
             $table->timestamps();
         });
     }

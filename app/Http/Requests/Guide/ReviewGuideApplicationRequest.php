@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Guide;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StorePlaceImagesRequest extends FormRequest
+class ReviewGuideApplicationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +24,10 @@ class StorePlaceImagesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'images' => 'required|array|min:1|max:10',
-            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120' //5MB
+            'status' => ['required', Rule::in([
+                'under_review', 'approved', 'rejected', 'changes_requested',
+            ])],
+            'review_note' => ['required_if:status,rejected,changes_requested', 'nullable', 'string', 'max:200'],
         ];
     }
 }

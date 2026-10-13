@@ -18,7 +18,9 @@ class PermissionSeeder extends Seeder
             ['type' => 'view_places', 'name_en' => 'View Places', 'name_ar' => 'عرض الأماكن'],
             ['type' => 'create_places', 'name_en' => 'Create Places', 'name_ar' => 'إنشاء الأماكن'],
             ['type' => 'update_places', 'name_en' => 'Update Places', 'name_ar' => 'تحديث الأماكن'],
-            ['type' => 'delete_places', 'name_en' => 'Delete Places', 'name_ar' => 'حذف الأماكن']
+            ['type' => 'delete_places', 'name_en' => 'Delete Places', 'name_ar' => 'حذف الأماكن'],
+            ['type' => 'view_guide_applications', 'name_en' => 'View Guide Applications', 'name_ar' => 'عرض طلبات المرشدين'],
+            ['type' => 'review_guide_applications', 'name_en' => 'Review Guide Applications', 'name_ar' => 'مراجعة طلبات المرشدين']
         ];
 
         foreach ($permissions as $permission) {

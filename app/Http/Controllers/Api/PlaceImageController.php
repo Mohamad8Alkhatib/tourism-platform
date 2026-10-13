@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePlaceImagesRequest;
+use App\Http\Requests\Place\StorePlaceImagesRequest;
 use App\Http\Resources\ImageResource;
 use App\Models\Place;
 use App\Services\PlaceImageService;

@@ -16,8 +16,13 @@ return new class extends Migration
             $table->foreignId('user_id')
                 ->constrained()
                 ->cascadeOnDelete();
+            $table->foreignId('city_id')
+                ->constrained();
             $table->text('bio_en')->nullable();
             $table->text('bio_ar')->nullable();
+            $table->unsignedInteger('years_experience');
+            $table->json('languages');
+            $table->string('verification_document', 500);
             $table->enum('status', [
                 'pending', 'under_review', 'approved',
                 'rejected', 'changes_requested',
@@ -27,9 +32,8 @@ return new class extends Migration
                 ->constrained('users')
                 ->nullOnDelete();
             $table->timestamp('reviewed_at')->nullable();
+            $table->text('review_note')->nullable();
             $table->timestamps();
-
-            $table->index('user_id');
         });
     }
 
